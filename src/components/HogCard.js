@@ -1,13 +1,15 @@
 import React from 'react'
+import { blockParams } from 'handlebars'
 // import hogImgs from '../hog-imgs'
 class HogCard extends React.Component {
     state = {
         showDetails: false,
+        display: "block"
     }
 
     clickHandle = () => {
         this.setState({
-            showDetails: !this.state.showDetails
+            showDetails: !this.state.showDetails,
         })
     }
 
@@ -18,8 +20,15 @@ class HogCard extends React.Component {
                     <p>Greased: {this.props.hogObj.greased ? "Very Oily Hoggie" : "Dry Hoggie"}</p>
                     <p>Weight: {this.props.hogObj.weight}</p>
                     <p>Highest Medal: {this.props.hogObj["highest medal achieved"]}</p>
+                
             </div>
         )
+    }
+
+    hideHog = () => {
+        this.setState({
+            display: "none"
+        })
     }
 
     render(){
@@ -28,12 +37,15 @@ class HogCard extends React.Component {
         let imgPath = require(`../hog-imgs/${hogImg}.jpg`);
         
        return (
-           <div className="ui eight wide column"><br/>
+
+           <div className="ui eight wide column" style={{display: this.state.display}}><br/>
                <p>{this.props.hogObj.name}</p><br/>
                <img src={imgPath} /><br/>
             <button onClick={this.clickHandle}>{this.state.showDetails ? "Hide" : "Show"} Details</button>
                 {this.state.showDetails ? this.showDetails() : null}
+            <button onClick={this.hideHog}>Hide Hoggie!</button>
            </div>
+          
        )
     }
 }

@@ -3,12 +3,21 @@ import '../App.css';
 import Nav from './Nav'
 import hogs from '../porkers_data';
 import HogCard from './HogCard'
+
+
 class App extends Component {
   
   state = {
     showGreased: false,
     sortedName: false,
-    sortedWeight: false
+    sortedWeight: false,
+    hiddenHogs: false
+  }
+
+  hideHogs = () => {
+    this.setState({
+      hiddenHogs: !this.state.hiddenHogs
+    })
   }
 
   nameSort = () => {
@@ -74,12 +83,15 @@ class App extends Component {
       hogArr = hogs
     }
 
+    // let i = 0;
     return hogArr.map((hog) => {
+      // let hiddenHogs = [];
         if (this.state.showGreased) {
-          return (hog.greased ? <HogCard hogObj={hog}/> : null )
+          return (hog.greased ? <HogCard hogObj={hog} /> : null )
         } 
         else 
         {
+        
         return (
         <div>
           <HogCard
