@@ -1,78 +1,47 @@
 import React, { Component } from 'react';
-import hogs from '../porkers_data';
 import HogCard from './HogCard'
-
-import ag from '../hog-imgs/augustus_gloop.jpg';
-import bop from '../hog-imgs/bay_of_pigs.jpg'
-import c from '../hog-imgs/cherub.jpg'
-import gn from '../hog-imgs/galaxy_note.jpg'
-import lme from '../hog-imgs/leggo_my_eggo.jpg'
-import m from '../hog-imgs/mudblood.jpg'
-import ps from '../hog-imgs/piggy_smalls.jpg'
-import pc from '../hog-imgs/porkchop.jpg'
-import rd from '../hog-imgs/rainbowdash.jpg'
-import s from '../hog-imgs/sobriety.jpg'
-import tpc from '../hog-imgs/the_prosciutto_concern.jpg'
-import t from '../hog-imgs/trouble.jpg'
-import ts from '../hog-imgs/truffleshuffle.jpg'
-
-const hogImgMap = {
-    'Mudblood': m,
-    'Porkchop': pc,
-    'Cherub': c,
-    'Piggy smalls': ps,
-    'Trouble': t,
-    'Sobriety': s,
-    'Rainbowdash': rd,
-    'TruffleShuffle': ts,
-    'Bay of Pigs': bop,
-    'The Prosciutto Concern': tpc,
-    'Galaxy Note': gn,
-    'Leggo My Eggo': lme,
-    'Augustus Gloop': ag
-}
 
 
 class MainBody extends Component {
 
     state = {
-        hogs: hogs,
-        activeHog: null,
-        isActive: false
+        activeHog: null
     }
 
     setActiveHog = (name) => {
-        this.setState(previousState => {
-            return{
-                activeHog: name,
-                isActive: !previousState.isActive
-            }
+        this.setState({            
+            activeHog: name
         })
     }
 
 
     renderHogs = () => {
-        let hogsToDisplay = [...this.state.hogs]
-        if (this.props.onlyGreased) {
+        let hogsToDisplay = [...this.props.hogs]
+        if (this.props.filter === "greased") {
             hogsToDisplay = hogsToDisplay.filter(hog => hog.greased)
+        } else if (this.props.filter === "notGreased") {
+            hogsToDisplay = hogsToDisplay.filter(hog => !hog.greased)            
         }
-        if (this.props.sortName) {
+        
+        if (this.props.sortBy === 'name') {
             hogsToDisplay = hogsToDisplay.sort((hogA, hogB) => hogA.name.localeCompare(hogB.name))
-        }
-        if (this.props.sortWeight) {
+        } else if (this.props.sortBy === 'weight') {
             hogsToDisplay = hogsToDisplay.sort((hogA, hogB) => hogA.weight - hogB.weight)
-        }
+        } 
 
         return hogsToDisplay.map(hog => {
-            return <HogCard hog={hog} setActiveHog={this.setActiveHog} activeHog={this.state.activeHog} img={hogImgMap[hog.name]} key={hog.name}/> 
+            return <HogCard hog={hog} status={this.props.status} penHog={this.props.penHog} setActiveHog={this.setActiveHog} activeHog={this.state.activeHog} key={hog.name}/> 
         })
     }
 
+
+
     render() {
-        console.log(this.props.sortName, this.props.sortWeight)
         return (
             <div className="ui grid container">
-                {this.renderHogs()}
+                <div className="ui cards" >
+                    {this.renderHogs()}
+                </div>
             </div>
         )
     }

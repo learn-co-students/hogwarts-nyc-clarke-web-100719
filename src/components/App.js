@@ -3,37 +3,41 @@ import '../App.css';
 import Nav from './Nav'
 import MainBody from './MainBody'
 import ButtonBar from './ButtonBar'
+import hogs from '../porkers_data';
 
 
 class App extends Component {
   state = {
-    onlyGreased: false,
-    sortName: false,
-    sortWeight: false
+    filter: "",
+    sortBy: "",
+    hiddenHogs: [],
+    sourceHogs: hogs,
+    listedHogs: [...hogs]
   }
 
-  changeToggle = (toggle) => {
-    this.setState(previousState => {
-      return {
-        [toggle]: !previousState[toggle]
-      }
+  penHog = (targetHog) => {
+    this.setState({
+      hiddenHogs: [...this.state.hiddenHogs, targetHog],
+      listedHogs: this.state.listedHogs.filter(hog => hog !== targetHog)
     })
   }
 
-  changeSortName = () => {
-
+  changeState = (state, value) => {
+    this.setState({
+        [state]: value
+      })
   }
 
-  changeSortWeight = () => {
-
-  }
   render() {
-    console
+    console.log(this.state)
     return (
       <div className="App">
           < Nav />
-          < ButtonBar  onlyGreased={this.state.onlyGreased} sortName={this.state.sortName} sortWeight={this.state.sortWeight} changeToggle={this.changeToggle}/>
-          < MainBody  onlyGreased={this.state.onlyGreased} sortName={this.state.sortName} sortWeight={this.state.sortWeight}/>
+          < ButtonBar changeState={this.changeState} filter={this.state.filter} sortBy={this.state.sortBy} />
+          <h1 className="ui header">Remaining Hogs</h1>
+          < MainBody  penHog={this.penHog} status="unpenned" hogs={this.state.listedHogs} filter={this.state.filter} sortBy={this.state.sortBy}/>
+          <h1 className="ui header">Penned Hogs</h1>
+          < MainBody penHog={this.penHog} status="penned" hogs={this.state.hiddenHogs} />
       </div>
     )
   }

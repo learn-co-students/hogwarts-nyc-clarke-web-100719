@@ -1,42 +1,63 @@
 import React, { Component } from 'react';
 
-
-
 class HogCard extends Component {
 
+
+    slugify = () => {
+        return this.props.hog.name.replace(/\s/g, "_").toLowerCase()
+    }
+
     handleClick = () => {
-        this.props.setActiveHog(this.props.hog.name)
+        if (this.props.activeHog === this.props.hog.name) {
+            this.props.setActiveHog(null)
+        } else {
+            this.props.setActiveHog(this.props.hog.name)
+        }
     }
 
     renderHogDetails = () => {
         if (this.props.hog.name === this.props.activeHog) {
             return (
-                    <h3><ul>
-                        <li>
+                <div className="small feed">
+                        <div className="summary">
                             Specialty: {this.props.hog.specialty}
-                        </li>
-                        <li>
-                            Greased: {this.props.hog.greased.toString()}
-                        </li>
-                        <li>
+                        </div>
+                        <div className="summary">
+                            {this.props.hog.greased ? "" : "Not "}Greased
+                        </div>
+                        <div className="summary">
                             Weight: {this.props.hog.weight}
-                        </li>
-                        <li>
+                        </div>
+                        <div className="summary">
                             Highest Medal Achieved: {this.props.hog['highest medal achieved']}
-                        </li>
-                    </ul></h3>               
+                        </div>
+                </div>
             )
         }
     }
 
+//     <div class="ui cards">
+//   <div class="card">
+//     <div class="content">
+//       <div class="header">Elliot Fu</div>
+//       <div class="meta">Friend</div>
+//       <div class="description">
+//         Elliot Fu is a film-maker from New York.
+//       </div>
+//     </div>
+//   </div>
     render() {
+        // console.log(this.props)
         return (
-            <div className="ui eight wide column" onClick={this.handleClick}>
-                <div className={ this.props.activeHog === this.props.hog.name ? 'maxPigTile pigTile' : 'pigTile'}>
-                    <h3>{this.props.hog.name}</h3>
-                    <img src={this.props.img} alt={this.props.hog.name}/>
-                    {this.renderHogDetails()}
-                </div>
+            <div className="ui stackable card" onClick={this.handleClick}>
+                    <div className="image">
+                        <img src={`./hog-imgs/${this.slugify()}.jpg`} alt={this.props.hog.name}/>
+                    </div>
+                    <div className="content">
+                        <div className="header">{this.props.hog.name}</div>
+                        {this.renderHogDetails()}
+                    </div>
+                    <button className="ui bottom attached button" onClick={() => this.props.penHog(this.props.hog)}>{ this.props.status === "unpenned" ? "Pen Hog" : "Release Hog"}</button>
             </div>
         )
     }

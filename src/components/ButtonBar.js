@@ -2,17 +2,27 @@ import React, {Component} from 'react'
 
 class ButtonBar extends Component {
 
-    handleClick = (event) => {
-        this.props.changeToggle(event.target.name)
+    handleChange = (event) => {
+        if (event.target.name === "sortBy") {
+            this.props.changeState(event.target.name, event.target.value)
+        } else if (event.target.name === "filter") {
+            this.props.changeState(event.target.name, event.target.value)
+        }
     }
 
     render() {
         return (
-            <div className="navWrapper">
-                <button onClick={this.handleClick} name="onlyGreased"> {this.props.onlyGreased ? "All" : "Only Greased"} </button>
-                <button onClick={this.handleClick} name="sortName"> {this.props.sortName ? "Unsort by Name" : "Sort by Name"} </button>
-                <button onClick={this.handleClick} name="sortWeight"> {this.props.sortWeight ? "Unsort by Weight" : "Sort by Weight"} </button>
-
+            <div className="filterWrapper">
+                <select onChange={this.handleChange} name="filter" value={this.props.filter} className="ui selection dropdown">
+                    <option value="">All Pigs</option>
+                    <option value="greased">Greased</option>
+                    <option value="notGreased">Not Greased</option>
+                </select>
+                <select onChange={this.handleChange} name="sortBy" value={this.props.sortBy} className="ui selection dropdown">
+                    <option value="">None</option>
+                    <option value="name">Name</option>
+                    <option value="weight">Weight</option>
+                </select>
             </div>
         )
     }
