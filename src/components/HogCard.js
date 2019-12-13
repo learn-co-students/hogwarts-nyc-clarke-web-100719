@@ -36,18 +36,7 @@ class HogCard extends Component {
         }
     }
 
-//     <div class="ui cards">
-//   <div class="card">
-//     <div class="content">
-//       <div class="header">Elliot Fu</div>
-//       <div class="meta">Friend</div>
-//       <div class="description">
-//         Elliot Fu is a film-maker from New York.
-//       </div>
-//     </div>
-//   </div>
     render() {
-        // console.log(this.props)
         return (
             <div className="ui stackable card" onClick={this.handleClick}>
                     <div className="image">
